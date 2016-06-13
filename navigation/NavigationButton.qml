@@ -1,0 +1,51 @@
+// ekke (Ekkehard Gentz) @ekkescorner
+import QtQuick 2.6
+import QtQuick.Layouts 1.3
+import QtQuick.Controls 2.0
+import QtQuick.Controls.Material 2.0
+import QtGraphicalEffects 1.0
+import "../common"
+
+ToolButton {
+    id: myButton
+    // as default this Button is uncolored and loves inside a color Bar
+    property bool isColored: false
+    property bool isActive: index == currentIndex
+    property string myIconFolder: isColored? iconFolder : iconOnPrimaryFolder
+    Layout.alignment: Qt.AlignHCenter
+    focusPolicy: Qt.NoFocus
+    height: 56
+    width: myBar.width / bottomNavigationModel.length
+    Column {
+        spacing: 0
+        topPadding: myButton.isActive || !myBar.suppressInactiveLabels? 0 : 6
+        anchors.horizontalCenter: parent.horizontalCenter
+        Image {
+            id: contentImage
+            width: 24
+            height: 24
+            verticalAlignment: Image.AlignTop
+            anchors.horizontalCenter: parent.horizontalCenter
+            source: "qrc:/images/"+myIconFolder+"/"+modelData.icon
+            opacity: isActive? myBar.activeOpacity : myBar.inactiveOpacity
+            ColorOverlay {
+                id: colorOverlay
+                visible: isColored && isActive
+                anchors.fill: parent
+                source: contentImage
+                color: primaryColor
+            }
+        }
+        Label {
+            visible: myButton.isActive || !myBar.suppressInactiveLabels
+            anchors.horizontalCenter: parent.horizontalCenter
+            text: modelData.name
+            opacity: isColored? (isActive? 1.0 : 0.7) : (isActive? myBar.activeOpacity : myBar.inactiveOpacity)
+            color: isColored? (isActive? primaryColor : flatButtonTextColor) : textOnPrimary
+            font.pixelSize: myButton.isActive? myBar.activeFontSize : myBar.inactiveFontSize
+        }
+    }
+    onClicked: {
+        currentIndex = index
+    }
+} // myButton
