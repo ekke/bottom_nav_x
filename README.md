@@ -48,10 +48,12 @@ This sample app uses Material Design with UI Controls provided by Qt 5.7+ and wa
 A detailed description you'll find at my blog: http://bit.ly/qt-tab-pages-x
 
 ### Screenshot Android
-TBD
+![alt tag](https://appbus.files.wordpress.com/2016/06/android_portrait.png  "Screenshot Android Portrait")
+![alt tag](https://appbus.files.wordpress.com/2016/06/android_landscape.png  "Screenshot Android Landscape")
 
 ### Screenshot iOS
-TBD
+![alt tag](https://appbus.files.wordpress.com/2016/06/ios_portrait.png  "Screenshot iOS Portrait")
+![alt tag](https://appbus.files.wordpress.com/2016/06/ios_landscape.png  "Screenshot iOS Landscape")
 
 more screenshots here:
 http://bit.ly/qt-bottom-nav-x
