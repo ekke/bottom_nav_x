@@ -56,6 +56,8 @@ ApplicationWindow {
     property color popupTextColor: themePalette[10]
     property real toolBarActiveOpacity: themePalette[11]
     property real toolBarInactiveOpacity: themePalette[12]
+    property color toastColor: themePalette[13]
+    property real toastOpacity: themePalette[14]
     // Material.dropShadowColor  OK for Light, but too dark for dark theme
     property color dropShadow: isDarkTheme? "#E4E4E4" : Material.dropShadowColor
     onIsDarkThemeChanged: {
@@ -342,9 +344,21 @@ ApplicationWindow {
     PopupSettings {
         id: popupSettings
         onAboutToHide: {
-            popupSettings.update()
-            resetFocus()
+            if(popupSettings.isOk) {
+                popupSettings.update()
+                popupToast.start(qsTr("Settings done"))
+            } else {
+                resetFocus()
+            }
         }
     } // popupSettings
+
+    // PopupToast
+    PopupToast {
+        id: popupToast
+        onAboutToHide: {
+            resetFocus()
+        }
+    }
 
 } // app window
