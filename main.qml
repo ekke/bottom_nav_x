@@ -153,6 +153,7 @@ ApplicationWindow {
         visible: isLandscape && !hideTitleBar
         anchors.top: parent.top
         anchors.left: parent.left
+        anchors.leftMargin: sideBar.width+6
         anchors.right: parent.right
         active: isLandscape && !hideTitleBar
         source: "common/SimpleTextTitle.qml"
@@ -184,6 +185,7 @@ ApplicationWindow {
         focus: true
         anchors.top: isLandscape? titleBarFloating.bottom : parent.top
         anchors.left: isLandscape? sideBar.right : parent.left
+        anchors.topMargin: isLandscape? 6 : 0
         anchors.right: parent.right
         anchors.bottom: parent.bottom
         // shows a Busy indicator - won't be visible yet
