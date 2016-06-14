@@ -45,5 +45,6 @@
         <file>navigation/BottomNavigationBar.qml</file>
         <file>navigation/NavigationButton.qml</file>
         <file>navigation/BottomNavigationBarUncolored.qml</file>
+        <file>navigation/SideNavigationBar.qml</file>
     </qresource>
 </RCC>

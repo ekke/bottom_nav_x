@@ -8,17 +8,13 @@ import "../common"
 
 Pane {
     id: myBar
-    property bool suppressInactiveLabels: bottomNavigationModel.length > 3
-    property int currentIndex: 0
+    property bool suppressInactiveLabels: navigationModel.length > 3
     property real activeOpacity: iconFolder == "black" ?  0.87 : 1.0
     property real inactiveOpacity: iconFolder == "black" ? 0.26 : 0.56
     property int activeFontSize: 14
     property int inactiveFontSize: 12
-    onCurrentIndexChanged: {
-        rootPane.activeDestination(currentIndex)
-    }
-    anchors.left: parent.left
-    anchors.right: parent.right
+    // anchors.left: parent.left
+    // anchors.right: parent.right
     leftPadding: 0
     rightPadding: 0
     HorizontalDivider{
@@ -32,7 +28,7 @@ Pane {
         anchors.right: parent.right
         spacing: 0
         Repeater {
-            model: bottomNavigationModel
+            model: navigationModel
             NavigationButton {
                 id: myButton
                 isColored: true

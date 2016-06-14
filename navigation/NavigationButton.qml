@@ -10,12 +10,12 @@ ToolButton {
     id: myButton
     // as default this Button is uncolored and loves inside a color Bar
     property bool isColored: false
-    property bool isActive: index == currentIndex
+    property bool isActive: index == navigationIndex
     property string myIconFolder: isColored? iconFolder : iconOnPrimaryFolder
     Layout.alignment: Qt.AlignHCenter
     focusPolicy: Qt.NoFocus
     height: 56
-    width: myBar.width / bottomNavigationModel.length
+    width: myBar.width / navigationModel.length
     Column {
         spacing: 0
         topPadding: myButton.isActive || !myBar.suppressInactiveLabels? 0 : 6
@@ -46,6 +46,6 @@ ToolButton {
         }
     }
     onClicked: {
-        currentIndex = index
+        navigationIndex = index
     }
 } // myButton

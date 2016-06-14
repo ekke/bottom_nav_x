@@ -156,17 +156,33 @@ ApplicationWindow {
         }
     }
 
-    property var bottomNavigationModel: [{"name": "Car", "icon": "car.png"},
-                                            {"name": "Bus", "icon": "bus.png"},
-                                            {"name": "Subway", "icon": "subway.png"},
-                                            {"name": "Truck", "icon": "truck.png"},
-                                            {"name": "Flight", "icon": "flight.png"}]
-
+    property var navigationModel: [{"name": "Car", "icon": "car.png"},
+        {"name": "Bus", "icon": "bus.png"},
+        {"name": "Subway", "icon": "subway.png"},
+        {"name": "Truck", "icon": "truck.png"},
+        {"name": "Flight", "icon": "flight.png"}]
+    property int navigationIndex: 0
+    onNavigationIndexChanged: {
+        rootPane.activeDestination(navigationIndex)
+    }
 
     // header only used in PORTRAIT to provide a fixed TitleBar
     header: isLandscape? null : titleBar
 
-    footer: BottomNavigationBar{}
+    footer: isLandscape? null : bottomBar
+
+    Loader {
+        id: bottomBar
+        visible: !isLandscape
+        active: !isLandscape
+        source: "navigation/BottomNavigationBar.qml"
+    }
+    Loader {
+        id: sideBar
+        visible: isLandscape
+        active: isLandscape
+        source: "navigation/SideNavigationBar.qml"
+    }
 
     Loader {
         id: titleBar
@@ -216,205 +232,218 @@ ApplicationWindow {
     StackView {
         id: rootPane
         focus: true
-                anchors.top: isLandscape? titleBarFloating.bottom : parent.top
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.bottom: parent.bottom
-                initialItem: Label {
-                    id: theLabel
-                    text: "test header: "+header.height+" footer: "+footer.height
-                }
+        anchors.top: isLandscape? titleBarFloating.bottom : parent.top
+        anchors.left: isLandscape? sideBar.right : parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        initialItem: ColumnLayout {
+            Label {
+                leftPadding: 12
+                visible: !isLandscape
+                text: "test header: "+ !isLandscape? titleBar.height : ""
+            }
+            Label {
+                leftPadding: 12
+                visible: !isLandscape
+                text: "test footer: "+ !isLandscape? bottomBar.height : ""
+            }
+            Label {
+                leftPadding: 12
+                id: destLabel
+                text: "theDestination"
+            }
+        }
 
-                function activeDestination(navigationIndex) {
-                    theLabel.text = "Active Destination: "+navigationIndex
-                }
+        function activeDestination(navigationIndex) {
+            destLabel.text = "Active Destination: "+navigationIndex
+        }
 
     } // rootPane
 
-//    SwipeView {
-//        id: navPane
-//        focus: true
-//        // anchors.fill: parent
-//        anchors.top: isLandscape? titleBarFloating.bottom : parent.top
-//        anchors.left: parent.left
-//        anchors.right: parent.right
-//        anchors.bottom: parent.bottom
-//        currentIndex: 0
-//        // currentIndex is the NEXT index swiped to
-//        onCurrentIndexChanged: {
-//            if(isLandscape) {
-//                titleBarFloating.item.currentIndex = currentIndex
-//            } else {
-//                titleBar.item.currentIndex = currentIndex
-//            }
-//            switch(currentIndex) {
-//            case 1:
-//                pageThreeLoader.active = true
-//                break;
-//            case 2:
-//                pageThreeLoader.active = true
-//                pageFourLoader.active = true
-//                break;
-//            case 3:
-//                pageThreeLoader.active = true
-//                pageFourLoader.active = true
-//                pageFiveLoader.active = true
-//                break;
-//            case 4:
-//                pageFourLoader.active = true
-//                pageFiveLoader.active = true
-//                break;
-//            }
-//        }
+    //    SwipeView {
+    //        id: navPane
+    //        focus: true
+    //        // anchors.fill: parent
+    //        anchors.top: isLandscape? titleBarFloating.bottom : parent.top
+    //        anchors.left: parent.left
+    //        anchors.right: parent.right
+    //        anchors.bottom: parent.bottom
+    //        currentIndex: 0
+    //        // currentIndex is the NEXT index swiped to
+    //        onCurrentIndexChanged: {
+    //            if(isLandscape) {
+    //                titleBarFloating.item.currentIndex = currentIndex
+    //            } else {
+    //                titleBar.item.currentIndex = currentIndex
+    //            }
+    //            switch(currentIndex) {
+    //            case 1:
+    //                pageThreeLoader.active = true
+    //                break;
+    //            case 2:
+    //                pageThreeLoader.active = true
+    //                pageFourLoader.active = true
+    //                break;
+    //            case 3:
+    //                pageThreeLoader.active = true
+    //                pageFourLoader.active = true
+    //                pageFiveLoader.active = true
+    //                break;
+    //            case 4:
+    //                pageFourLoader.active = true
+    //                pageFiveLoader.active = true
+    //                break;
+    //            }
+    //        }
 
-//        // support of BACK key
-//        property bool firstPageInfoRead: false
-//        Keys.onBackPressed: {
-//            event.accepted = navPane.currentIndex > 0 || !firstPageInfoRead
-//            if(navPane.currentIndex > 0) {
-//                onePageBack()
-//                return
-//            }
-//            // first time we reached first tab
-//            // user gets Popupo Info
-//            // hitting again BACK will close the app
-//            if(!firstPageInfoRead) {
-//                firstPageReached()
-//            }
-//            // We don't have to manually cleanup loaded Pages
-//            // While shutting down the app, all loaded Pages will be deconstructed
-//            // and cleanup called
-//        }
+    //        // support of BACK key
+    //        property bool firstPageInfoRead: false
+    //        Keys.onBackPressed: {
+    //            event.accepted = navPane.currentIndex > 0 || !firstPageInfoRead
+    //            if(navPane.currentIndex > 0) {
+    //                onePageBack()
+    //                return
+    //            }
+    //            // first time we reached first tab
+    //            // user gets Popupo Info
+    //            // hitting again BACK will close the app
+    //            if(!firstPageInfoRead) {
+    //                firstPageReached()
+    //            }
+    //            // We don't have to manually cleanup loaded Pages
+    //            // While shutting down the app, all loaded Pages will be deconstructed
+    //            // and cleanup called
+    //        }
 
-//        // some keyboard shortcuts if:
-//        // * running on BlackBerry PRIV (Slider with hardware keyboard)
-//        // * or attached Bluetooth Keyboard
-//        // Jump to Page 1 (w), 2 (e), 3 (r), 4 (s), 5(d)
-//        // Goto next tab: 'n' or 'space'
-//        // Goto previous tab: 'p' or 'shift' + 'space'
-//        Shortcut {
-//            sequence: "w"
-//            onActivated: navPane.goToPage(0)
-//        }
-//        Shortcut {
-//            sequence: "Alt+w"
-//            onActivated: navPane.goToPage(0)
-//        }
-//        Shortcut {
-//            sequence: "e"
-//            onActivated: navPane.goToPage(1)
-//        }
-//        Shortcut {
-//            sequence: "Alt+e"
-//            onActivated: navPane.goToPage(1)
-//        }
-//        Shortcut {
-//            sequence: "r"
-//            onActivated: navPane.goToPage(2)
-//        }
-//        Shortcut {
-//            sequence: "Alt+r"
-//            onActivated: navPane.goToPage(2)
-//        }
-//        Shortcut {
-//            sequence: "s"
-//            onActivated: navPane.goToPage(3)
-//        }
-//        Shortcut {
-//            sequence: "Alt+s"
-//            onActivated: navPane.goToPage(3)
-//        }
-//        Shortcut {
-//            sequence: "d"
-//            onActivated: navPane.goToPage(4)
-//        }
-//        Shortcut {
-//            sequence: "Alt+d"
-//            onActivated: navPane.goToPage(4)
-//        }
-//        // n == NEXT
-//        Shortcut {
-//            sequence: "n"
-//            onActivated: navPane.onePageForward()
-//        }
-//        // p == PREVIOUS
-//        Shortcut {
-//            sequence: "p"
-//            onActivated: navPane.onePageBack()
-//        }
-//        Shortcut {
-//            sequence: " "
-//            onActivated: navPane.onePageForward()
-//        }
-//        Shortcut {
-//            sequence: "Shift+ "
-//            onActivated: navPane.onePageBack()
-//        }
-//        function onePageBack() {
-//            if(navPane.currentIndex == 0) {
-//                firstPageReached()
-//                return
-//            }
-//            navPane.goToPage(currentIndex - 1)
-//        } // onePageBack
+    //        // some keyboard shortcuts if:
+    //        // * running on BlackBerry PRIV (Slider with hardware keyboard)
+    //        // * or attached Bluetooth Keyboard
+    //        // Jump to Page 1 (w), 2 (e), 3 (r), 4 (s), 5(d)
+    //        // Goto next tab: 'n' or 'space'
+    //        // Goto previous tab: 'p' or 'shift' + 'space'
+    //        Shortcut {
+    //            sequence: "w"
+    //            onActivated: navPane.goToPage(0)
+    //        }
+    //        Shortcut {
+    //            sequence: "Alt+w"
+    //            onActivated: navPane.goToPage(0)
+    //        }
+    //        Shortcut {
+    //            sequence: "e"
+    //            onActivated: navPane.goToPage(1)
+    //        }
+    //        Shortcut {
+    //            sequence: "Alt+e"
+    //            onActivated: navPane.goToPage(1)
+    //        }
+    //        Shortcut {
+    //            sequence: "r"
+    //            onActivated: navPane.goToPage(2)
+    //        }
+    //        Shortcut {
+    //            sequence: "Alt+r"
+    //            onActivated: navPane.goToPage(2)
+    //        }
+    //        Shortcut {
+    //            sequence: "s"
+    //            onActivated: navPane.goToPage(3)
+    //        }
+    //        Shortcut {
+    //            sequence: "Alt+s"
+    //            onActivated: navPane.goToPage(3)
+    //        }
+    //        Shortcut {
+    //            sequence: "d"
+    //            onActivated: navPane.goToPage(4)
+    //        }
+    //        Shortcut {
+    //            sequence: "Alt+d"
+    //            onActivated: navPane.goToPage(4)
+    //        }
+    //        // n == NEXT
+    //        Shortcut {
+    //            sequence: "n"
+    //            onActivated: navPane.onePageForward()
+    //        }
+    //        // p == PREVIOUS
+    //        Shortcut {
+    //            sequence: "p"
+    //            onActivated: navPane.onePageBack()
+    //        }
+    //        Shortcut {
+    //            sequence: " "
+    //            onActivated: navPane.onePageForward()
+    //        }
+    //        Shortcut {
+    //            sequence: "Shift+ "
+    //            onActivated: navPane.onePageBack()
+    //        }
+    //        function onePageBack() {
+    //            if(navPane.currentIndex == 0) {
+    //                firstPageReached()
+    //                return
+    //            }
+    //            navPane.goToPage(currentIndex - 1)
+    //        } // onePageBack
 
-//        function onePageForward() {
-//            if(navPane.currentIndex == 4) {
-//                lastPageReached()
-//                return
-//            }
-//            navPane.goToPage(currentIndex + 1)
-//        }
+    //        function onePageForward() {
+    //            if(navPane.currentIndex == 4) {
+    //                lastPageReached()
+    //                return
+    //            }
+    //            navPane.goToPage(currentIndex + 1)
+    //        }
 
-//        function goToPage(pageIndex) {
-//            if(pageIndex == navPane.currentIndex) {
-//                // it's the current page
-//                return
-//            }
-//            if(pageIndex > 4 || pageIndex < 0) {
-//                return
-//            }
-//            navPane.currentIndex = pageIndex
-//        } // goToPage
-//        // Page 1 and 2 preloaded to be able to swipe
-//        // other pages will be lazy loaded first time they're needed
-//        Loader {
-//            // index 0
-//            id: pageOneLoader
-//            active: true
-//            source: "pages/PageOne.qml"
-//            onLoaded: item.init()
-//        }
-//        Loader {
-//            // index 1
-//            id: pageTwoLoader
-//            active: true
-//            source: "pages/PageTwo.qml"
-//            onLoaded: item.init()
-//        }
-//        Loader {
-//            // index 2
-//            id: pageThreeLoader
-//            active: false
-//            source: "pages/PageThree.qml"
-//            onLoaded: item.init()
-//        }
-//        Loader {
-//            // index 3
-//            id: pageFourLoader
-//            active: false
-//            source: "pages/PageFour.qml"
-//            onLoaded: item.init()
-//        }
-//        Loader {
-//            // index 4
-//            id: pageFiveLoader
-//            active: false
-//            source: "pages/PageFive.qml"
-//            onLoaded: item.init()
-//        }
+    //        function goToPage(pageIndex) {
+    //            if(pageIndex == navPane.currentIndex) {
+    //                // it's the current page
+    //                return
+    //            }
+    //            if(pageIndex > 4 || pageIndex < 0) {
+    //                return
+    //            }
+    //            navPane.currentIndex = pageIndex
+    //        } // goToPage
+    //        // Page 1 and 2 preloaded to be able to swipe
+    //        // other pages will be lazy loaded first time they're needed
+    //        Loader {
+    //            // index 0
+    //            id: pageOneLoader
+    //            active: true
+    //            source: "pages/PageOne.qml"
+    //            onLoaded: item.init()
+    //        }
+    //        Loader {
+    //            // index 1
+    //            id: pageTwoLoader
+    //            active: true
+    //            source: "pages/PageTwo.qml"
+    //            onLoaded: item.init()
+    //        }
+    //        Loader {
+    //            // index 2
+    //            id: pageThreeLoader
+    //            active: false
+    //            source: "pages/PageThree.qml"
+    //            onLoaded: item.init()
+    //        }
+    //        Loader {
+    //            // index 3
+    //            id: pageFourLoader
+    //            active: false
+    //            source: "pages/PageFour.qml"
+    //            onLoaded: item.init()
+    //        }
+    //        Loader {
+    //            // index 4
+    //            id: pageFiveLoader
+    //            active: false
+    //            source: "pages/PageFive.qml"
+    //            onLoaded: item.init()
+    //        }
 
-//    } // navPane
+    //    } // navPane
 
     function switchPrimaryPalette(paletteIndex) {
         primaryPalette = myApp.primaryPalette(paletteIndex)
