@@ -35,38 +35,6 @@ Flickable {
                 }
             }
             HorizontalDivider{}
-            RowLayout {
-                // implicite fillWidth = true
-                spacing: 10
-                ButtonIconActive {
-                    imageName: tabButtonModel[3].icon
-                    imageSize: 48
-                    onClicked: {
-                        navPane.goToPage(3)
-                    }
-                }
-                ButtonIconActive {
-                    imageName: tabButtonModel[0].icon
-                    imageSize: 48
-                    onClicked: {
-                        navPane.goToPage(0)
-                    }
-                }
-                ButtonIconActive {
-                    imageName: tabButtonModel[2].icon
-                    imageSize: 48
-                    onClicked: {
-                        navPane.goToPage(2)
-                    }
-                }
-            } // button row
-            HorizontalDivider {}
-            LabelSubheading {
-                id: statusLabel
-                visible: text.length
-                text: ""
-                color: "red"
-            }
         } // col layout
     } // pane root
     ScrollIndicator.vertical: ScrollIndicator { }
@@ -74,10 +42,6 @@ Flickable {
     // emitting a Signal could be another option
     Component.onDestruction: {
         cleanup()
-    }
-
-    function whoAmI() {
-        return qsTr("Message from Page Five [4]")
     }
     // called immediately after Loader.loaded
     function init() {

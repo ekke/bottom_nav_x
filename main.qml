@@ -184,215 +184,135 @@ ApplicationWindow {
         anchors.left: isLandscape? sideBar.right : parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        initialItem: ColumnLayout {
-            Label {
-                leftPadding: 12
-                visible: !isLandscape
-                text: "test header: "+ !isLandscape? titleBar.height : ""
+        initialItem: pageOneLoader.item
+
+        // support of BACK key
+        property bool firstPageInfoRead: false
+        Keys.onBackPressed: {
+            event.accepted = !firstPageInfoRead
+            // user gets Popupo Info
+            // hitting again BACK will close the app
+            if(!firstPageInfoRead) {
+                firstPageInfoRead = true
+                showInfo(qsTr("Next time hitting BACK will close the app"))
+                return
             }
-            Label {
-                leftPadding: 12
-                visible: !isLandscape
-                text: "test footer: "+ !isLandscape? bottomBar.height : ""
-            }
-            Label {
-                leftPadding: 12
-                id: destLabel
-                text: "theDestination"
-            }
+            // We must cleanup loaded Pages
+
+        }
+
+        // some keyboard shortcuts if:
+        // * running on BlackBerry PRIV (Slider with hardware keyboard)
+        // * or attached Bluetooth Keyboard
+        // Jump to Button 1 (w), 2 (e), 3 (r), 4 (s), 5(d)
+        Shortcut {
+            sequence: "w"
+            onActivated: navigationIndex = 0
+        }
+        Shortcut {
+            sequence: "Alt+w"
+            onActivated: navigationIndex = 0
+        }
+        Shortcut {
+            sequence: "e"
+            onActivated: navigationIndex = 1
+        }
+        Shortcut {
+            sequence: "Alt+e"
+            onActivated: navigationIndex = 1
+        }
+        Shortcut {
+            sequence: "r"
+            onActivated: navigationIndex = 2
+        }
+        Shortcut {
+            sequence: "Alt+r"
+            onActivated: navigationIndex = 2
+        }
+        Shortcut {
+            sequence: "s"
+            onActivated: navigationIndex = 3
+        }
+        Shortcut {
+            sequence: "Alt+s"
+            onActivated: navigationIndex = 3
+        }
+        Shortcut {
+            sequence: "d"
+            onActivated: navigationIndex = 4
+        }
+        Shortcut {
+            sequence: "Alt+d"
+            onActivated: navigationIndex = 4
+        }
+
+        //
+        Loader {
+            // index 0
+            id: pageOneLoader
+            active: true
+            source: "pages/PageOne.qml"
+            onLoaded: item.init()
+        }
+        Loader {
+            // index 1
+            id: pageTwoLoader
+            active: false
+            source: "pages/PageTwo.qml"
+            onLoaded: item.init()
+        }
+        Loader {
+            // index 2
+            id: pageThreeLoader
+            active: false
+            source: "pages/PageThree.qml"
+            onLoaded: item.init()
+        }
+        Loader {
+            // index 3
+            id: pageFourLoader
+            active: false
+            source: "pages/PageFour.qml"
+            onLoaded: item.init()
+        }
+        Loader {
+            // index 4
+            id: pageFiveLoader
+            active: false
+            source: "pages/PageFive.qml"
+            onLoaded: item.init()
         }
 
         function activeDestination(navigationIndex) {
-            destLabel.text = "Active Destination: "+navigationIndex
+            var page
+            switch(navigationIndex) {
+            case 0:
+                // already loaded
+                page = pageOneLoader.item
+                break;
+            case 1:
+                pageTwoLoader.active = true
+                page = pageTwoLoader.item
+                break;
+            case 2:
+                pageThreeLoader.active = true
+                page = pageThreeLoader.item
+                break;
+            case 3:
+                pageFourLoader.active = true
+                page = pageFourLoader.item
+                break;
+            case 4:
+                pageFiveLoader.active = true
+                page = pageFiveLoader.item
+                break;
+            }
+            rootPane.replace(page)
         }
-
-
-                // some keyboard shortcuts if:
-                // * running on BlackBerry PRIV (Slider with hardware keyboard)
-                // * or attached Bluetooth Keyboard
-                // Jump to Button 1 (w), 2 (e), 3 (r), 4 (s), 5(d)
-                Shortcut {
-                    sequence: "w"
-                    onActivated: navigationIndex = 0
-                }
-                Shortcut {
-                    sequence: "Alt+w"
-                    onActivated: navigationIndex = 0
-                }
-                Shortcut {
-                    sequence: "e"
-                    onActivated: navigationIndex = 1
-                }
-                Shortcut {
-                    sequence: "Alt+e"
-                    onActivated: navigationIndex = 1
-                }
-                Shortcut {
-                    sequence: "r"
-                    onActivated: navigationIndex = 2
-                }
-                Shortcut {
-                    sequence: "Alt+r"
-                    onActivated: navigationIndex = 2
-                }
-                Shortcut {
-                    sequence: "s"
-                    onActivated: navigationIndex = 3
-                }
-                Shortcut {
-                    sequence: "Alt+s"
-                    onActivated: navigationIndex = 3
-                }
-                Shortcut {
-                    sequence: "d"
-                    onActivated: navigationIndex = 4
-                }
-                Shortcut {
-                    sequence: "Alt+d"
-                    onActivated: navigationIndex = 4
-                }
-
 
     } // rootPane
 
-    //    SwipeView {
-    //        id: navPane
-    //        focus: true
-    //        // anchors.fill: parent
-    //        anchors.top: isLandscape? titleBarFloating.bottom : parent.top
-    //        anchors.left: parent.left
-    //        anchors.right: parent.right
-    //        anchors.bottom: parent.bottom
-    //        currentIndex: 0
-    //        // currentIndex is the NEXT index swiped to
-    //        onCurrentIndexChanged: {
-    //            if(isLandscape) {
-    //                titleBarFloating.item.currentIndex = currentIndex
-    //            } else {
-    //                titleBar.item.currentIndex = currentIndex
-    //            }
-    //            switch(currentIndex) {
-    //            case 1:
-    //                pageThreeLoader.active = true
-    //                break;
-    //            case 2:
-    //                pageThreeLoader.active = true
-    //                pageFourLoader.active = true
-    //                break;
-    //            case 3:
-    //                pageThreeLoader.active = true
-    //                pageFourLoader.active = true
-    //                pageFiveLoader.active = true
-    //                break;
-    //            case 4:
-    //                pageFourLoader.active = true
-    //                pageFiveLoader.active = true
-    //                break;
-    //            }
-    //        }
 
-    //        // support of BACK key
-    //        property bool firstPageInfoRead: false
-    //        Keys.onBackPressed: {
-    //            event.accepted = navPane.currentIndex > 0 || !firstPageInfoRead
-    //            if(navPane.currentIndex > 0) {
-    //                onePageBack()
-    //                return
-    //            }
-    //            // first time we reached first tab
-    //            // user gets Popupo Info
-    //            // hitting again BACK will close the app
-    //            if(!firstPageInfoRead) {
-    //                firstPageReached()
-    //            }
-    //            // We don't have to manually cleanup loaded Pages
-    //            // While shutting down the app, all loaded Pages will be deconstructed
-    //            // and cleanup called
-    //        }
-
-    //        // n == NEXT
-    //        Shortcut {
-    //            sequence: "n"
-    //            onActivated: navPane.onePageForward()
-    //        }
-    //        // p == PREVIOUS
-    //        Shortcut {
-    //            sequence: "p"
-    //            onActivated: navPane.onePageBack()
-    //        }
-    //        Shortcut {
-    //            sequence: " "
-    //            onActivated: navPane.onePageForward()
-    //        }
-    //        Shortcut {
-    //            sequence: "Shift+ "
-    //            onActivated: navPane.onePageBack()
-    //        }
-    //        function onePageBack() {
-    //            if(navPane.currentIndex == 0) {
-    //                firstPageReached()
-    //                return
-    //            }
-    //            navPane.goToPage(currentIndex - 1)
-    //        } // onePageBack
-
-    //        function onePageForward() {
-    //            if(navPane.currentIndex == 4) {
-    //                lastPageReached()
-    //                return
-    //            }
-    //            navPane.goToPage(currentIndex + 1)
-    //        }
-
-    //        function goToPage(pageIndex) {
-    //            if(pageIndex == navPane.currentIndex) {
-    //                // it's the current page
-    //                return
-    //            }
-    //            if(pageIndex > 4 || pageIndex < 0) {
-    //                return
-    //            }
-    //            navPane.currentIndex = pageIndex
-    //        } // goToPage
-    //        // Page 1 and 2 preloaded to be able to swipe
-    //        // other pages will be lazy loaded first time they're needed
-    //        Loader {
-    //            // index 0
-    //            id: pageOneLoader
-    //            active: true
-    //            source: "pages/PageOne.qml"
-    //            onLoaded: item.init()
-    //        }
-    //        Loader {
-    //            // index 1
-    //            id: pageTwoLoader
-    //            active: true
-    //            source: "pages/PageTwo.qml"
-    //            onLoaded: item.init()
-    //        }
-    //        Loader {
-    //            // index 2
-    //            id: pageThreeLoader
-    //            active: false
-    //            source: "pages/PageThree.qml"
-    //            onLoaded: item.init()
-    //        }
-    //        Loader {
-    //            // index 3
-    //            id: pageFourLoader
-    //            active: false
-    //            source: "pages/PageFour.qml"
-    //            onLoaded: item.init()
-    //        }
-    //        Loader {
-    //            // index 4
-    //            id: pageFiveLoader
-    //            active: false
-    //            source: "pages/PageFive.qml"
-    //            onLoaded: item.init()
-    //        }
-
-    //    } // navPane
 
     function switchPrimaryPalette(paletteIndex) {
         primaryPalette = myApp.primaryPalette(paletteIndex)
@@ -414,22 +334,6 @@ ApplicationWindow {
         }
     }
 
-    function firstPageReached() {
-        popupInfo.text = qsTr("No more Tabs\nLeftmost Tab reached")
-        popupInfo.buttonText = qsTr("OK")
-        popupInfo.open()
-        navPane.firstPageInfoRead = true
-    }
-    function lastPageReached() {
-        popupInfo.text = qsTr("No more Tabs\nRightmost Tab reached")
-        popupInfo.buttonText = qsTr("OK")
-        popupInfo.open()
-    }
-    function pageNotValid(pageNumber) {
-        popupInfo.text = qsTr("Page %1 not valid.\nPlease tap 'Done' Button","").arg(pageNumber)
-        popupInfo.buttonText = qsTr("So Long, and Thx For All The Fish")
-        popupInfo.open()
-    }
     function showInfo(info) {
         popupInfo.text = info
         popupInfo.buttonText = qsTr("OK")
@@ -439,9 +343,6 @@ ApplicationWindow {
         popupSettings.open()
     }
 
-    // Unfortunately no SIGNAL if end or beginning reached from SWIPE GESTURE
-    // so at the moment user gets no visual feedback
-    // TODO Bugreport
     PopupInfo {
         id: popupInfo
         onAboutToHide: {

@@ -37,25 +37,6 @@ Flickable {
                 }
             }
             HorizontalDivider {}
-            RowLayout {
-                // implicite fillWidth = true
-                spacing: 20
-                ButtonIconActive {
-                    imageName: tabButtonModel[1].icon
-                    imageSize: 48
-                    onClicked: {
-                        navPane.goToPage(1)
-                    }
-                    ToolTip.visible: pressed
-                    ToolTip.delay: 500
-                    ToolTip.text: qsTr("Take a look at the Bus schedule")
-                }
-                LabelBodySecondary {
-                    rightPadding: 12
-                    text: qsTr("Tap on Bus Icon: after a short delay you'll see a ToolTip while pressing down.")
-                    wrapMode: Text.WordWrap
-                }
-            } // button row
         } // col layout
     } // root
     ScrollIndicator.vertical: ScrollIndicator { }
@@ -65,9 +46,6 @@ Flickable {
         cleanup()
     }
 
-    function whoAmI() {
-        return qsTr("Message from Page One [0]")
-    }
     // called immediately after Loader.loaded
     function init() {
         console.log(qsTr("Init done from One [0]"))
