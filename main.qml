@@ -94,11 +94,11 @@ ApplicationWindow {
     //
 
     // NAVIGATION BAR PROPRTIES
-    property var navigationModel: [{"name": "Car", "icon": "car.png", "source": "pages/PageOne.qml"},
-        {"name": "Bus", "icon": "bus.png", "source": "pages/PageTwo.qml"},
-        {"name": "Subway", "icon": "subway.png", "source": "pages/PageThree.qml"},
-        {"name": "Truck", "icon": "truck.png", "source": "pages/PageFour.qml"},
-        {"name": "Flight", "icon": "flight.png", "source": "pages/PageFive.qml"}]
+    property var navigationModel: [{"name": "Car", "icon": "car.png", "source": "../pages/PageOne.qml"},
+        {"name": "Bus", "icon": "bus.png", "source": "../pages/PageTwo.qml"},
+        {"name": "Subway", "icon": "subway.png", "source": "../pages/PageThree.qml"},
+        {"name": "Truck", "icon": "truck.png", "source": "../pages/PageFour.qml"},
+        {"name": "Flight", "icon": "flight.png", "source": "../pages/PageFive.qml"}]
     property int navigationIndex: 0
     onNavigationIndexChanged: {
         rootPane.activeDestination(navigationIndex)
@@ -270,18 +270,7 @@ ApplicationWindow {
         Repeater {
             id: destinations
             model: navigationModel
-            Loader {
-                id: pageLoader
-                active: false
-                source: modelData.source
-                onLoaded: {
-                    item.init()
-                    rootPane.replace(item)
-                    if(index == 0) {
-                        fab.visible = true
-                    }
-                }
-            }
+            Destination {}
             Component.onCompleted: {
                 destinations.itemAt(0).active = true
             }

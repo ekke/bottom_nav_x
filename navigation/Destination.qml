@@ -2,11 +2,17 @@
 import QtQuick 2.6
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.0
-import QtQuick.Controls.Material 2.0
-import QtGraphicalEffects 1.0
-import "../common"
+import "../pages"
 
 Loader {
-    id: destinationLoader
-
+    id: pageLoader
+    active: false
+    source: modelData.source
+    onLoaded: {
+        item.init()
+        rootPane.replace(item)
+        if(index == 0) {
+            fab.visible = true
+        }
+    }
 }
