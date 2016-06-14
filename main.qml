@@ -270,14 +270,25 @@ ApplicationWindow {
         Repeater {
             id: destinations
             model: navigationModel
-            Destination {}
+            // Destination encapsulates Loader
+            // in next app we'll add some policies
+            // to Destination HowTo load dynamically
+            Destination {
+                id: destinationLoader
+            }
             Component.onCompleted: {
+                // all destinations created
+                // load the first one
+                // from onLoaded will replace BusyIndicator
                 destinations.itemAt(0).active = true
             }
         }
+        function firstDestinationLoaded() {
+            fab.visible = true
+        }
 
         function activeDestination(navigationIndex) {
-            if(destinations.itemAt(navigationIndex).active) {
+            if(destinations.itemAt(navigationIndex).status == Loader.Ready) {
                 rootPane.replace(destinations.itemAt(navigationIndex).item)
             } else {
                 destinations.itemAt(navigationIndex).active = true
