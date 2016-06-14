@@ -9,14 +9,9 @@ import "../common"
 Pane {
     id: myBar
     z: 1
-    property bool suppressInactiveLabels: navigationModel.length > 3
     property real activeOpacity: iconOnPrimaryFolder == "black" ?  0.87 : 1.0
     property real inactiveOpacity: iconOnPrimaryFolder == "black" ? 0.54 : 0.7
-    property int activeFontSize: 14
-    property int inactiveFontSize: 12
     height: 56
-    // anchors.left: parent.left
-    // anchors.right: parent.right
     background: Rectangle {
         color: primaryColor
     }
@@ -32,7 +27,5 @@ Pane {
                 isColored: false
             }
         } // repeater
-
     } // RowLayout
-
 } // bottomNavigationBar

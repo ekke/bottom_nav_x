@@ -75,6 +75,8 @@ ApplicationWindow {
     property int fontSizeSubheading: 16
     property int fontSizeBodyAndButton: 14 // is Default
     property int fontSizeCaption: 12
+    property int fontSizeActiveNavigationButton: 14
+    property int fontSizeInactiveNavigationButton: 12
     // fonts are grouped into primary and secondary with different Opacity
     // to make it easier to get the right property,
     // here's the opacity per size:
@@ -165,9 +167,13 @@ ApplicationWindow {
     onNavigationIndexChanged: {
         rootPane.activeDestination(navigationIndex)
     }
+    // recommended: suppress if more then 3 buttons, perhaps only on Android
+    property bool suppressInactiveLabels: true
+    property bool hideTitleBar: true
+    property bool navigationBarIsColored: false
 
     // header only used in PORTRAIT to provide a fixed TitleBar
-    header: isLandscape? null : titleBar
+    header: isLandscape || hideTitleBar ? null : titleBar
 
     footer: isLandscape? null : bottomBar
 
@@ -175,19 +181,19 @@ ApplicationWindow {
         id: bottomBar
         visible: !isLandscape
         active: !isLandscape
-        source: "navigation/BottomNavigationBar.qml"
+        source: navigationBarIsColored? "navigation/BottomNavigationBar.qml" : "navigation/BottomNavigationBarUncolored.qml"
     }
     Loader {
         id: sideBar
         visible: isLandscape
         active: isLandscape
-        source: "navigation/SideNavigationBar.qml"
+        source: navigationBarIsColored? "navigation/SideNavigationBar.qml" : "navigation/SideNavigationBarUncolored.qml"
     }
 
     Loader {
         id: titleBar
-        visible: !isLandscape
-        active: !isLandscape
+        visible: !isLandscape && !hideTitleBar
+        active: !isLandscape && !hideTitleBar
         source: "common/SimpleTextTitle.qml"
         onLoaded: {
             if(item) {
@@ -202,11 +208,11 @@ ApplicationWindow {
     // only wanted to demonstrate HowTo use fix and floating Titles
     Loader {
         id: titleBarFloating
-        visible: isLandscape
+        visible: isLandscape && !hideTitleBar
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
-        active: isLandscape
+        active: isLandscape && !hideTitleBar
         source: "common/SimpleTextTitle.qml"
         onLoaded: {
             if(item) {

@@ -10,16 +10,14 @@ Pane {
     id: myBar
     z: 1
     leftPadding: 0
-    property real activeOpacity: iconOnPrimaryFolder == "black" ?  0.87 : 1.0
-    property real inactiveOpacity: iconOnPrimaryFolder == "black" ? 0.54 : 0.7
-    width: 80
+    property real activeOpacity: iconFolder == "black" ?  0.87 : 1.0
+    property real inactiveOpacity: iconFolder == "black" ? 0.26 : 0.56
+    width: 80 + myBarDivider.width
     height: appWindow.height
     property int titleHeight: hideTitleBar? 0 : 48
     property int buttonHeight: (appWindow.height - titleHeight) / navigationModel.length
-    background: Rectangle {
-        color: primaryColor
-    }
     ColumnLayout {
+        id: myButtons
         focus: false
         anchors.left: parent.left
         anchors.right: parent.right
@@ -32,7 +30,7 @@ Pane {
             model: navigationModel
             NavigationButton {
                 id: myButton
-                isColored: false
+                isColored: true
                 height: buttonHeight
                 implicitHeight: buttonHeight
                 width: 80
@@ -40,4 +38,8 @@ Pane {
             }
         } // repeater
     } // ColumnLayout
+    VerticalDivider{
+        id: myBarDivider
+        anchors.left: myButtons.right
+    }
 } // sideNavigationBar

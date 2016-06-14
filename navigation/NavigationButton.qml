@@ -18,33 +18,38 @@ ToolButton {
     width: myBar.width / navigationModel.length
     Column {
         spacing: 0
-        topPadding: myButton.isActive || !myBar.suppressInactiveLabels? 0 : 6
+        topPadding: myButton.isActive || !suppressInactiveLabels? 0 : 6
         anchors.horizontalCenter: parent.horizontalCenter
-        Image {
-            id: contentImage
+        Item {
+            anchors.horizontalCenter: parent.horizontalCenter
             width: 24
             height: 24
-            verticalAlignment: Image.AlignTop
-            anchors.horizontalCenter: parent.horizontalCenter
-            source: "qrc:/images/"+myIconFolder+"/"+modelData.icon
-            opacity: isActive? myBar.activeOpacity : myBar.inactiveOpacity
+            Image {
+                id: contentImage
+                width: 24
+                height: 24
+                verticalAlignment: Image.AlignTop
+                anchors.horizontalCenter: parent.horizontalCenter
+                source: "qrc:/images/"+myIconFolder+"/"+modelData.icon
+                opacity: isActive? myBar.activeOpacity : myBar.inactiveOpacity
+            }
             ColorOverlay {
                 id: colorOverlay
-                visible: isColored && isActive
-                anchors.fill: parent
+                visible: myButton.isColored && myButton.isActive
+                anchors.fill: contentImage
                 source: contentImage
                 color: primaryColor
             }
-        }
+        } // image and coloroverlay
         Label {
-            visible: myButton.isActive || !myBar.suppressInactiveLabels
+            visible: myButton.isActive || !suppressInactiveLabels
             anchors.horizontalCenter: parent.horizontalCenter
             text: modelData.name
             opacity: isColored? (isActive? 1.0 : 0.7) : (isActive? myBar.activeOpacity : myBar.inactiveOpacity)
             color: isColored? (isActive? primaryColor : flatButtonTextColor) : textOnPrimary
-            font.pixelSize: myButton.isActive? myBar.activeFontSize : myBar.inactiveFontSize
-        }
-    }
+            font.pixelSize: myButton.isActive? fontSizeActiveNavigationButton : fontSizeInactiveNavigationButton
+        } // label
+    } // column
     onClicked: {
         navigationIndex = index
     }
