@@ -206,6 +206,53 @@ ApplicationWindow {
             destLabel.text = "Active Destination: "+navigationIndex
         }
 
+
+                // some keyboard shortcuts if:
+                // * running on BlackBerry PRIV (Slider with hardware keyboard)
+                // * or attached Bluetooth Keyboard
+                // Jump to Button 1 (w), 2 (e), 3 (r), 4 (s), 5(d)
+                Shortcut {
+                    sequence: "w"
+                    onActivated: navigationIndex = 0
+                }
+                Shortcut {
+                    sequence: "Alt+w"
+                    onActivated: navigationIndex = 0
+                }
+                Shortcut {
+                    sequence: "e"
+                    onActivated: navigationIndex = 1
+                }
+                Shortcut {
+                    sequence: "Alt+e"
+                    onActivated: navigationIndex = 1
+                }
+                Shortcut {
+                    sequence: "r"
+                    onActivated: navigationIndex = 2
+                }
+                Shortcut {
+                    sequence: "Alt+r"
+                    onActivated: navigationIndex = 2
+                }
+                Shortcut {
+                    sequence: "s"
+                    onActivated: navigationIndex = 3
+                }
+                Shortcut {
+                    sequence: "Alt+s"
+                    onActivated: navigationIndex = 3
+                }
+                Shortcut {
+                    sequence: "d"
+                    onActivated: navigationIndex = 4
+                }
+                Shortcut {
+                    sequence: "Alt+d"
+                    onActivated: navigationIndex = 4
+                }
+
+
     } // rootPane
 
     //    SwipeView {
@@ -263,52 +310,6 @@ ApplicationWindow {
     //            // and cleanup called
     //        }
 
-    //        // some keyboard shortcuts if:
-    //        // * running on BlackBerry PRIV (Slider with hardware keyboard)
-    //        // * or attached Bluetooth Keyboard
-    //        // Jump to Page 1 (w), 2 (e), 3 (r), 4 (s), 5(d)
-    //        // Goto next tab: 'n' or 'space'
-    //        // Goto previous tab: 'p' or 'shift' + 'space'
-    //        Shortcut {
-    //            sequence: "w"
-    //            onActivated: navPane.goToPage(0)
-    //        }
-    //        Shortcut {
-    //            sequence: "Alt+w"
-    //            onActivated: navPane.goToPage(0)
-    //        }
-    //        Shortcut {
-    //            sequence: "e"
-    //            onActivated: navPane.goToPage(1)
-    //        }
-    //        Shortcut {
-    //            sequence: "Alt+e"
-    //            onActivated: navPane.goToPage(1)
-    //        }
-    //        Shortcut {
-    //            sequence: "r"
-    //            onActivated: navPane.goToPage(2)
-    //        }
-    //        Shortcut {
-    //            sequence: "Alt+r"
-    //            onActivated: navPane.goToPage(2)
-    //        }
-    //        Shortcut {
-    //            sequence: "s"
-    //            onActivated: navPane.goToPage(3)
-    //        }
-    //        Shortcut {
-    //            sequence: "Alt+s"
-    //            onActivated: navPane.goToPage(3)
-    //        }
-    //        Shortcut {
-    //            sequence: "d"
-    //            onActivated: navPane.goToPage(4)
-    //        }
-    //        Shortcut {
-    //            sequence: "Alt+d"
-    //            onActivated: navPane.goToPage(4)
-    //        }
     //        // n == NEXT
     //        Shortcut {
     //            sequence: "n"
