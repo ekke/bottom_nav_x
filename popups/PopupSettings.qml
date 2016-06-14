@@ -8,9 +8,10 @@ import "../common"
 
 Popup {
     id: popup
-    property bool tabBarIsFixedSettings: tabBarIsFixed
-    property int tabButtonDesignSettings: tabButtonDesign
-    property bool tabBarInsideTitleBarSettings: tabBarInsideTitleBar
+    property bool suppressInactiveLabelsSettings: suppressInactiveLabels
+    property bool hideTitleBarSettings: hideTitleBar
+    property bool navigationBarIsColoredSettings: navigationBarIsColored
+
     // default behavior for this Popup: OK Button Clicked
     property bool isOk: true
     x: parent.width - width - 12
@@ -34,7 +35,7 @@ Popup {
             anchors.left: parent.left
             spacing: 6
             LabelSubheading {
-                text: qsTr("Settings TabBar")
+                text: qsTr("Settings Navigation Bar")
                 color: accentColor
             }
             RowLayout {
@@ -42,59 +43,35 @@ Popup {
                     focusPolicy: Qt.NoFocus
                     topPadding: 6
                     leftPadding: 12
-                    text: qsTr("Tabs Scrollable")
-                    checked: !tabBarIsFixedSettings
+                    text: qsTr("Suppress inactive Labels")
+                    checked: suppressInactiveLabels
                     onCheckedChanged: {
-                        tabBarIsFixedSettings = !checked
+                        suppressInactiveLabelsSettings = checked
                     }
-                } // switch scrollable
-            } // row switch scroll
+                } // switch suppressInactiveLabels
+            } // row switch suppressInactiveLabels
             RowLayout {
                 Switch {
                     focusPolicy: Qt.NoFocus
                     leftPadding: 12
-                    text: qsTr("Tabs inside TitleBar")
-                    checked: tabBarInsideTitleBar
+                    text: qsTr("Hide TitleBar")
+                    checked: hideTitleBar
                     onCheckedChanged: {
-                        tabBarInsideTitleBarSettings = checked
+                        hideTitleBarSettings = checked
                     }
-                } // switch scrollable
-            } // row switch inside
+                } // switch hideTitleBar
+            } // row switch hideTitleBar
             RowLayout {
-                Frame {
-                    ColumnLayout {
-                        anchors.fill: parent
-                        spacing: 6
-                        RadioButton {
-                            id: radioText
-                            focusPolicy: Qt.NoFocus
-                            text: qsTr("Buttons Text only")
-                            checked: tabButtonDesignSettings == 0
-                            onCheckedChanged: {
-                                tabButtonDesignSettings = 0
-                            }
-                        }
-                        RadioButton {
-                            id: radioIcon
-                            focusPolicy: Qt.NoFocus
-                            text: qsTr("Buttons Icon only")
-                            checked: tabButtonDesignSettings == 1
-                            onCheckedChanged: {
-                                tabButtonDesignSettings = 1
-                            }
-                        }
-                        RadioButton {
-                            id: radioTextAndIcon
-                            focusPolicy: Qt.NoFocus
-                            text: qsTr("Buttons Icon and Text")
-                            checked: tabButtonDesignSettings == 2
-                            onCheckedChanged: {
-                                tabButtonDesignSettings = 2
-                            }
-                        }
+                Switch {
+                    focusPolicy: Qt.NoFocus
+                    leftPadding: 12
+                    text: qsTr("NaviagtionBar Primary Color")
+                    checked: navigationBarIsColored
+                    onCheckedChanged: {
+                        navigationBarIsColoredSettings = checked
                     }
-                }
-            } // radiobuttons design
+                } // switch navigationBarIsColored
+            } // row switch navigationBarIsColored
 
 
             RowLayout {
@@ -127,9 +104,9 @@ Popup {
 
     function update() {
         if(isOk) {
-            tabBarIsFixed = tabBarIsFixedSettings
-            tabButtonDesign = tabButtonDesignSettings
-            tabBarInsideTitleBar = tabBarInsideTitleBarSettings
+            suppressInactiveLabels = suppressInactiveLabelsSettings
+            hideTitleBar = hideTitleBarSettings
+            navigationBarIsColored = navigationBarIsColoredSettings
         }
     }
 

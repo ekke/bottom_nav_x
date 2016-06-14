@@ -93,71 +93,7 @@ ApplicationWindow {
     property real opacityCaption: secondaryTextOpacity
     //
 
-    // TabBar properties
-    property string titleAndTabBarSource: "tabs/TitleWithTabBar.qml"
-    property bool tabBarIsFixed: true
-    property bool tabBarInsideTitleBar: true
-    onTabBarInsideTitleBarChanged: {
-        if (tabBarInsideTitleBar) {
-            if(tabButtonTextOnly) {
-                titleAndTabBarSource = "tabs/TitleWithTabBar.qml"
-                return
-            }
-            if(tabButtonIconOnly) {
-                titleAndTabBarSource = "tabs/TitleWithIconTabBar.qml"
-                return
-            }
-            if(tabButtonTextAndIcon) {
-                titleAndTabBarSource = "tabs/TitleWithIconTextTabBar.qml"
-                return
-            }
-        } else {
-            if(tabButtonTextOnly) {
-                titleAndTabBarSource = "tabs/TitleAndTabBar.qml"
-                return
-            }
-            if(tabButtonIconOnly) {
-                titleAndTabBarSource = "tabs/TitleAndIconTabBar.qml"
-                return
-            }
-            if(tabButtonTextAndIcon) {
-                titleAndTabBarSource = "tabs/TitleAndIconTextTabBar.qml"
-                return
-            }
-        }
-    }
-    property int tabButtonDesign: 0
-    property bool tabButtonTextOnly: tabButtonDesign == 0
-    onTabButtonTextOnlyChanged: {
-        if(tabButtonTextOnly) {
-            if (tabBarInsideTitleBar) {
-                titleAndTabBarSource = "tabs/TitleWithTabBar.qml"
-            } else {
-                titleAndTabBarSource = "tabs/TitleAndTabBar.qml"
-            }
-        }
-    }
-    property bool tabButtonIconOnly: tabButtonDesign == 1
-    onTabButtonIconOnlyChanged: {
-        if(tabButtonIconOnly) {
-            if (tabBarInsideTitleBar) {
-                titleAndTabBarSource = "tabs/TitleWithIconTabBar.qml"
-            } else {
-                titleAndTabBarSource = "tabs/TitleAndIconTabBar.qml"
-            }
-        }
-    }
-    property bool tabButtonTextAndIcon: tabButtonDesign == 2
-    onTabButtonTextAndIconChanged: {
-        if(tabButtonTextAndIcon) {
-            if (tabBarInsideTitleBar) {
-                titleAndTabBarSource = "tabs/TitleWithIconTextTabBar.qml"
-            } else {
-                titleAndTabBarSource = "tabs/TitleAndIconTextTabBar.qml"
-            }
-        }
-    }
-
+    // NAVIGATION BAR PROPRTIES
     property var navigationModel: [{"name": "Car", "icon": "car.png"},
         {"name": "Bus", "icon": "bus.png"},
         {"name": "Subway", "icon": "subway.png"},
@@ -168,9 +104,15 @@ ApplicationWindow {
         rootPane.activeDestination(navigationIndex)
     }
     // recommended: suppress if more then 3 buttons, perhaps only on Android
-    property bool suppressInactiveLabels: true
-    property bool hideTitleBar: true
-    property bool navigationBarIsColored: false
+    property bool suppressInactiveLabels: navigationModel.length > 3
+    property bool hideTitleBar: false
+    onHideTitleBarChanged: {
+        if(isLandscape) {
+            sideBar.active = false
+            sideBar.active = isLandscape
+        }
+    }
+    property bool navigationBarIsColored: true
 
     // header only used in PORTRAIT to provide a fixed TitleBar
     header: isLandscape || hideTitleBar ? null : titleBar
@@ -493,7 +435,6 @@ ApplicationWindow {
         popupInfo.open()
     }
     function showSettings() {
-        popupSettings.tabBarIsFixedSettings = tabBarIsFixed
         popupSettings.open()
     }
 
