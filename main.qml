@@ -14,7 +14,7 @@ import "navigation"
 // This app is NOT a production ready app
 // This app's goal is only to help you to understand some concepts
 // see blog http://j.mp/qt-x to learn about Qt 5.7 for Material - styled Android or iOS Apps
-// learn about this tab_pages_x app from this article: http://bit.ly/qt-tab-pages-x
+// learn about this bottom_nav_x app from this article: http://bit.ly/qt-bottom-nav-x
 // ekke (Ekkehard gentz) @ekkescorner
 
 ApplicationWindow {
@@ -183,9 +183,9 @@ ApplicationWindow {
     StackView {
         id: rootPane
         focus: true
-        anchors.top: isLandscape? titleBarFloating.bottom : parent.top
+        anchors.top: isLandscape && !hideTitleBar? titleBarFloating.bottom : parent.top
         anchors.left: isLandscape? sideBar.right : parent.left
-        anchors.topMargin: isLandscape? 6 : 0
+        anchors.topMargin: isLandscape && !hideTitleBar? 6 : 0
         anchors.right: parent.right
         anchors.bottom: parent.bottom
         // shows a Busy indicator - won't be visible yet
