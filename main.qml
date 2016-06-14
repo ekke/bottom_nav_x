@@ -94,11 +94,11 @@ ApplicationWindow {
     //
 
     // NAVIGATION BAR PROPRTIES
-    property var navigationModel: [{"name": "Car", "icon": "car.png"},
-        {"name": "Bus", "icon": "bus.png"},
-        {"name": "Subway", "icon": "subway.png"},
-        {"name": "Truck", "icon": "truck.png"},
-        {"name": "Flight", "icon": "flight.png"}]
+    property var navigationModel: [{"name": "Car", "icon": "car.png", "source": "pages/PageOne.qml"},
+        {"name": "Bus", "icon": "bus.png", "source": "pages/PageTwo.qml"},
+        {"name": "Subway", "icon": "subway.png", "source": "pages/PageThree.qml"},
+        {"name": "Truck", "icon": "truck.png", "source": "pages/PageFour.qml"},
+        {"name": "Flight", "icon": "flight.png", "source": "pages/PageFive.qml"}]
     property int navigationIndex: 0
     onNavigationIndexChanged: {
         rootPane.activeDestination(navigationIndex)
@@ -165,6 +165,8 @@ ApplicationWindow {
 
     FloatingActionButton {
         id: fab
+        // will become visible as soon as first Destination loaded
+        visible: false
         property string imageName: "/settings.png"
         z: 1
         anchors.margins: 16
@@ -184,7 +186,26 @@ ApplicationWindow {
         anchors.left: isLandscape? sideBar.right : parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        initialItem: pageOneLoader.item
+        // shows a Busy indicator - won't be visible yet
+        // but in real life loading first Page or Pane could took some time
+        initialItem: InitialItemPage{}
+
+        replaceEnter: Transition {
+            PropertyAnimation {
+                property: "opacity"
+                from: 0
+                to:1
+                duration: 300
+            }
+        }
+        replaceExit: Transition {
+            PropertyAnimation {
+                property: "opacity"
+                from: 1
+                to:0
+                duration: 300
+            }
+        }
 
         // support of BACK key
         property bool firstPageInfoRead: false
@@ -246,68 +267,32 @@ ApplicationWindow {
             onActivated: navigationIndex = 4
         }
 
-        //
-        Loader {
-            // index 0
-            id: pageOneLoader
-            active: true
-            source: "pages/PageOne.qml"
-            onLoaded: item.init()
-        }
-        Loader {
-            // index 1
-            id: pageTwoLoader
-            active: false
-            source: "pages/PageTwo.qml"
-            onLoaded: item.init()
-        }
-        Loader {
-            // index 2
-            id: pageThreeLoader
-            active: false
-            source: "pages/PageThree.qml"
-            onLoaded: item.init()
-        }
-        Loader {
-            // index 3
-            id: pageFourLoader
-            active: false
-            source: "pages/PageFour.qml"
-            onLoaded: item.init()
-        }
-        Loader {
-            // index 4
-            id: pageFiveLoader
-            active: false
-            source: "pages/PageFive.qml"
-            onLoaded: item.init()
+        Repeater {
+            id: destinations
+            model: navigationModel
+            Loader {
+                id: pageLoader
+                active: false
+                source: modelData.source
+                onLoaded: {
+                    item.init()
+                    rootPane.replace(item)
+                    if(index == 0) {
+                        fab.visible = true
+                    }
+                }
+            }
+            Component.onCompleted: {
+                destinations.itemAt(0).active = true
+            }
         }
 
         function activeDestination(navigationIndex) {
-            var page
-            switch(navigationIndex) {
-            case 0:
-                // already loaded
-                page = pageOneLoader.item
-                break;
-            case 1:
-                pageTwoLoader.active = true
-                page = pageTwoLoader.item
-                break;
-            case 2:
-                pageThreeLoader.active = true
-                page = pageThreeLoader.item
-                break;
-            case 3:
-                pageFourLoader.active = true
-                page = pageFourLoader.item
-                break;
-            case 4:
-                pageFiveLoader.active = true
-                page = pageFiveLoader.item
-                break;
+            if(destinations.itemAt(navigationIndex).active) {
+                rootPane.replace(destinations.itemAt(navigationIndex).item)
+            } else {
+                destinations.itemAt(navigationIndex).active = true
             }
-            rootPane.replace(page)
         }
 
     } // rootPane
