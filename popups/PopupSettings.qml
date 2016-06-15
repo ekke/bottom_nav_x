@@ -66,7 +66,7 @@ Popup {
                 Switch {
                     focusPolicy: Qt.NoFocus
                     leftPadding: 12
-                    text: qsTr("NaviagtionBar Primary Color")
+                    text: qsTr("NavigationBar Primary Color")
                     checked: navigationBarIsColored
                     onCheckedChanged: {
                         navigationBarIsColoredSettings = checked
