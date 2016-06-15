@@ -10,10 +10,10 @@ ApplicationUI::ApplicationUI(QObject *parent) : QObject(parent)
 {
     // default theme is light
     mIsDarkTheme = false;
-    // default primary color is BlueGrey
-    mPrimaryPalette =  18;
-    // default accent color is orange
-    mAccentPalette = 14;
+    // default primary color is Teal
+    mPrimaryPalette =  8;
+    // default accent color is Brown
+    mAccentPalette = 16;
 }
 
 /* Change Theme Palette */
