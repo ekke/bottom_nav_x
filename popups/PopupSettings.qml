@@ -18,6 +18,7 @@ Popup {
     y: parent.height - height - 12
     width: Math.min(appWindow.width, appWindow.height) / 3 * 2
     height: Math.min(appWindow.height, theContent.height +10)
+    transformOrigin: Popup.BottomRight
     // Attention: clip should be used carefully,
     // but using a Flickable inside a Popup
     // you must set it to true
