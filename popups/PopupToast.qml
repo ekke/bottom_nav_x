@@ -7,8 +7,9 @@ import "../common"
 Popup {
     id: popup
     closePolicy: Popup.NoAutoClose
+    bottomMargin: isLandscape? 24 : 80
     x: (appWindow.width - width) / 2
-    y: (appWindow.height - height - 80)
+    y: (appWindow.height - height)
     background: Rectangle{
         color: toastColor
         radius: 24
