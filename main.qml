@@ -161,7 +161,7 @@ ApplicationWindow {
         source: "common/SimpleTextTitle.qml"
         onLoaded: {
             if(item) {
-                item.text = qsTr("HowTo move from A to B")
+                item.text = qsTr("From Sidebar to Destinations")
             }
         }
     }
