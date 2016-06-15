@@ -344,9 +344,8 @@ ApplicationWindow {
     PopupSettings {
         id: popupSettings
         onAboutToHide: {
-            if(popupSettings.isOk) {
-                popupSettings.update()
-                popupToast.start(qsTr("Settings done"))
+            if(popupSettings.update()) {
+                popupToast.start(qsTr("Settings modified"))
             } else {
                 resetFocus()
             }

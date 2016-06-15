@@ -103,11 +103,22 @@ Popup {
     } // flickable
 
     function update() {
+        var isModified = false
         if(isOk) {
-            suppressInactiveLabels = suppressInactiveLabelsSettings
-            hideTitleBar = hideTitleBarSettings
-            navigationBarIsColored = navigationBarIsColoredSettings
+            if(suppressInactiveLabels != suppressInactiveLabelsSettings) {
+                suppressInactiveLabels = suppressInactiveLabelsSettings
+                isModified = true
+            }
+            if (hideTitleBar != hideTitleBarSettings) {
+                hideTitleBar = hideTitleBarSettings
+                isModified = true
+            }
+            if (navigationBarIsColored != navigationBarIsColoredSettings) {
+                navigationBarIsColored = navigationBarIsColoredSettings
+                isModified = true
+            }
         }
+        return isModified
     }
 
 } // popup
