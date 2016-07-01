@@ -11,6 +11,7 @@ Pane {
     z: 1
     property real activeOpacity: iconOnPrimaryFolder == "black" ?  0.87 : 1.0
     property real inactiveOpacity: iconOnPrimaryFolder == "black" ? 0.54 : 0.7
+    contentWidth: parent.width
     height: 56
     background: Rectangle {
         color: primaryColor

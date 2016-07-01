@@ -14,8 +14,8 @@ ToolButton {
     property string myIconFolder: isColored? iconFolder : iconOnPrimaryFolder
     Layout.alignment: Qt.AlignHCenter
     focusPolicy: Qt.NoFocus
-    height: 56
-    width: myBar.width / navigationModel.length
+    implicitHeight: 56
+    implicitWidth: (myBar.width - 12) / navigationModel.length
     Column {
         spacing: 0
         topPadding: myButton.isActive || !suppressInactiveLabels? 0 : 6
